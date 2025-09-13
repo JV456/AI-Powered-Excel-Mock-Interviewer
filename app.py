@@ -280,14 +280,22 @@ def setup_api_key():
             )
             
             if api_key:
-                # Validate API key
-                if validate_api_key(api_key):
+                # Show validation progress
+                with st.spinner("🔍 Validating API key..."):
+                    is_valid = validate_api_key(api_key)
+                
+                if is_valid:
                     st.success("✅ Personal API key validated!")
                     st.session_state.api_key_validated = True
                     st.session_state.groq_api_key = api_key
                     return api_key
                 else:
                     st.error("❌ Invalid API key. Please check and try again.")
+                    st.error("💡 Make sure your API key:")
+                    st.write("   • Starts with 'gsk_'")
+                    st.write("   • Is from https://console.groq.com")
+                    st.write("   • Has sufficient credits/quota")
+                    st.write("   • Is copied correctly (no extra spaces)")
             else:
                 st.info("💡 Enter your personal Groq API key or use the default option above")
     else:
@@ -300,13 +308,22 @@ def setup_api_key():
         )
         
         if api_key:
-            if validate_api_key(api_key):
+            # Show validation progress
+            with st.spinner("🔍 Validating API key..."):
+                is_valid = validate_api_key(api_key)
+            
+            if is_valid:
                 st.success("✅ API key validated!")
                 st.session_state.api_key_validated = True
                 st.session_state.groq_api_key = api_key
                 return api_key
             else:
                 st.error("❌ Invalid API key. Please check and try again.")
+                st.error("💡 Make sure your API key:")
+                st.write("   • Starts with 'gsk_'")
+                st.write("   • Is from https://console.groq.com")
+                st.write("   • Has sufficient credits/quota")
+                st.write("   • Is copied correctly (no extra spaces)")
         
         st.info("💡 Enter your Groq API key to start the interview")
     
@@ -314,13 +331,35 @@ def setup_api_key():
 
 
 def validate_api_key(api_key: str) -> bool:
-    """Validate the Groq API key"""
+    """Validate the Groq API key by making a test API call"""
+    if not api_key or not api_key.strip():
+        return False
+    
+    # Check basic format (Groq API keys start with 'gsk_')
+    if not api_key.strip().startswith('gsk_'):
+        return False
+    
     try:
         from src.groq_ai_service import GroqAIService
-        test_service = GroqAIService(api_key=api_key)
-        # Try a simple API call to validate
+        test_service = GroqAIService(api_key=api_key.strip())
+        
+        # Make a simple test API call to validate the key
+        test_response = test_service.client.chat.completions.create(
+            model="gemma2-9b-it",
+            messages=[{"role": "user", "content": "Hello"}],
+            max_tokens=5,
+            temperature=0.1
+        )
+        
+        # If we get here without exception, the API key is valid
         return True
-    except Exception:
+        
+    except Exception as e:
+        # Log the error for debugging (optional)
+        error_str = str(e).lower()
+        if "unauthorized" in error_str or "invalid" in error_str or "authentication" in error_str:
+            return False
+        # For other errors (network, etc.), still return False
         return False
 
 

@@ -1,5 +1,8 @@
 """
-Streamlit Web Interface for AI-Powered Excel Mock Interviewer
+Streamlit Web Interface for AI-Powe    st.set_page_config(
+        page_title="AI-Powered Excel Mock Interviewer",
+        layout="wide",
+        initial_sidebar_state="expanded",xcel Mock Interviewer
 
 Modern, interactive web interface for conducting Excel proficiency assessments.
 """
@@ -39,7 +42,7 @@ def main():
     """Main Streamlit application"""
     st.set_page_config(
         page_title="AI-Powered Excel Mock Interviewer",
-        page_icon="📊",
+        page_icon="�",
         layout="wide",
         initial_sidebar_state="expanded",
         menu_items={
@@ -209,7 +212,7 @@ def main():
     
     # Sidebar for configuration and navigation
     with st.sidebar:
-        st.title("🎯 Interview Control")
+        st.title("Interview Control")
         
         # API Key Configuration
         setup_api_key()
@@ -251,7 +254,7 @@ def initialize_session_state():
 
 def setup_api_key():
     """Handle Groq API key setup"""
-    st.subheader("🔑 API Configuration")
+    st.subheader("API Configuration")
     
     # Check for environment variable first (your default API key)
     env_api_key = os.getenv('GROQ_API_KEY')
@@ -260,13 +263,13 @@ def setup_api_key():
         # Show option to use default or custom API key
         api_option = st.radio(
             "Choose API Key Option:",
-            ["🎯 Use Default (Free for Users)", "🔑 Use My Own API Key"],
+            ["Use Default (Free for Users)", "Use My Own API Key"],
             index=0,
             help="You can use the default API key or enter your own"
         )
         
-        if api_option == "🎯 Use Default (Free for Users)":
-            st.success("✅ Using default API key - Ready to start!")
+        if api_option == "Use Default (Free for Users)":
+            st.success("Using default API key - Ready to start!")
             st.session_state.api_key_validated = True
             st.session_state.groq_api_key = env_api_key
             return env_api_key
@@ -281,26 +284,26 @@ def setup_api_key():
             
             if api_key:
                 # Show validation progress
-                with st.spinner("🔍 Validating API key..."):
+                with st.spinner("Validating API key..."):
                     is_valid = validate_api_key(api_key)
                 
                 if is_valid:
-                    st.success("✅ Personal API key validated!")
+                    st.success("Personal API key validated!")
                     st.session_state.api_key_validated = True
                     st.session_state.groq_api_key = api_key
                     return api_key
                 else:
-                    st.error("❌ Invalid API key. Please check and try again.")
-                    st.error("💡 Make sure your API key:")
+                    st.error("Invalid API key. Please check and try again.")
+                    st.error("Make sure your API key:")
                     st.write("   • Starts with 'gsk_'")
                     st.write("   • Is from https://console.groq.com")
                     st.write("   • Has sufficient credits/quota")
                     st.write("   • Is copied correctly (no extra spaces)")
             else:
-                st.info("💡 Enter your personal Groq API key or use the default option above")
+                st.info("Enter your personal Groq API key or use the default option above")
     else:
         # Fallback: only manual input if no environment key
-        st.warning("⚠️ No default API key available")
+        st.warning("No default API key available")
         api_key = st.text_input(
             "Enter your Groq API Key:",
             type="password",
@@ -309,23 +312,23 @@ def setup_api_key():
         
         if api_key:
             # Show validation progress
-            with st.spinner("🔍 Validating API key..."):
+            with st.spinner("Validating API key..."):
                 is_valid = validate_api_key(api_key)
             
             if is_valid:
-                st.success("✅ API key validated!")
+                st.success("API key validated!")
                 st.session_state.api_key_validated = True
                 st.session_state.groq_api_key = api_key
                 return api_key
             else:
-                st.error("❌ Invalid API key. Please check and try again.")
-                st.error("💡 Make sure your API key:")
+                st.error("Invalid API key. Please check and try again.")
+                st.error("Make sure your API key:")
                 st.write("   • Starts with 'gsk_'")
                 st.write("   • Is from https://console.groq.com")
                 st.write("   • Has sufficient credits/quota")
                 st.write("   • Is copied correctly (no extra spaces)")
         
-        st.info("💡 Enter your Groq API key to start the interview")
+        st.info("Enter your Groq API key to start the interview")
     
     return None
 
@@ -368,7 +371,7 @@ def show_progress():
     if st.session_state.interviewer:
         state = st.session_state.interviewer.get_interview_state()
         
-        st.subheader("📈 Progress")
+        st.subheader("Progress")
         
         # Progress bar
         progress = state['current_question_number'] / state['total_questions']
@@ -386,20 +389,20 @@ def show_progress():
 
 def show_navigation_buttons():
     """Show navigation and control buttons"""
-    st.subheader("🎮 Controls")
+    st.subheader("Controls")
     
     col1, col2 = st.columns(2)
     
     with col1:
-        if st.button("🏠 Home", use_container_width=True):
+        if st.button("Home", use_container_width=True):
             reset_to_welcome()
     
     with col2:
-        if st.button("🔄 Restart", use_container_width=True):
+        if st.button("Restart", use_container_width=True):
             restart_interview()
     
     if st.session_state.interview_active:
-        if st.button("⏸️ Pause", use_container_width=True):
+        if st.button("Pause", use_container_width=True):
             st.session_state.interview_active = False
             st.rerun()
 
@@ -408,7 +411,7 @@ def show_welcome_page():
     """Display the welcome page"""
     st.markdown("""
     <div class="main-header">
-        <h1>🎯 AI-Powered Excel Mock Interviewer</h1>
+        <h1>AI-Powered Excel Mock Interviewer</h1>
         <p>Assess your Excel proficiency with AI-generated questions and intelligent feedback</p>
     </div>
     """, unsafe_allow_html=True)
@@ -418,7 +421,7 @@ def show_welcome_page():
     
     with col1:
         st.markdown("""
-        ### 🤖 AI-Powered
+        ### AI-Powered
         - Dynamic question generation
         - Intelligent answer evaluation
         - Personalized feedback
@@ -426,7 +429,7 @@ def show_welcome_page():
     
     with col2:
         st.markdown("""
-        ### 📊 Comprehensive Assessment
+        ### Comprehensive Assessment
         - Progressive difficulty levels
         - Multi-criteria evaluation
         - Detailed performance reports
@@ -434,7 +437,7 @@ def show_welcome_page():
     
     with col3:
         st.markdown("""
-        ### 🎯 Professional Ready
+        ### Professional Ready
         - Real-world scenarios
         - Business-focused problems
         - Actionable recommendations
@@ -442,7 +445,7 @@ def show_welcome_page():
     
     # How it works
     st.markdown("---")
-    st.subheader("🔄 How It Works")
+    st.subheader("How It Works")
     
     col1, col2, col3 = st.columns(3)
     
@@ -477,7 +480,7 @@ def show_welcome_page():
     if st.session_state.api_key_validated:
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
-            if st.button("🚀 Start Excel Assessment", use_container_width=True, type="primary"):
+            if st.button("Start Excel Assessment", use_container_width=True, type="primary"):
                 st.session_state.show_setup = False
                 st.session_state.interview_active = True
                 initialize_interviewer()
@@ -485,25 +488,25 @@ def show_welcome_page():
         
         # Show which API key is being used
         if st.session_state.get('groq_api_key') == os.getenv('GROQ_API_KEY'):
-            st.info("ℹ️ Using default API key - Free access for all users!")
+            st.info("Using default API key - Free access for all users!")
         else:
-            st.info("ℹ️ Using your personal API key")
+            st.info("Using your personal API key")
     else:
-        st.warning("⚠️ Please configure your Groq API key in the sidebar to begin")
+        st.warning("Please configure your Groq API key in the sidebar to begin")
 
 
 def show_setup_page():
     """Display the setup/configuration page"""
-    st.title("⚙️ Interview Setup")
+    st.title("Interview Setup")
     
     if not st.session_state.api_key_validated:
-        st.error("❌ Please configure your Groq API key in the sidebar first")
+        st.error("Please configure your Groq API key in the sidebar first")
         return
     
-    st.success("✅ API key configured. Ready to start!")
+    st.success("API key configured. Ready to start!")
     
     # Interview preferences
-    st.subheader("📋 Interview Preferences")
+    st.subheader("Interview Preferences")
     
     col1, col2 = st.columns(2)
     
@@ -525,7 +528,7 @@ def show_setup_page():
         )
     
     # Tips and preparation
-    st.subheader("💡 Preparation Tips")
+    st.subheader("Preparation Tips")
     st.markdown("""
     **For best results:**
     - Be specific about Excel functions and formulas
@@ -539,7 +542,7 @@ def show_setup_page():
     st.markdown("---")
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
-        if st.button("▶️ Begin Interview", use_container_width=True, type="primary"):
+        if st.button("Begin Interview", use_container_width=True, type="primary"):
             st.session_state.show_setup = False
             st.session_state.interview_active = True
             st.session_state.selected_question_count = question_count
@@ -551,23 +554,18 @@ def show_setup_page():
 def show_interview_page():
     """Display the main interview interface"""
     if not st.session_state.interviewer:
-        st.error("❌ Interview not properly initialized. Please restart.")
+        st.error("Interview not properly initialized. Please restart.")
         return
     
     interviewer = st.session_state.interviewer
     state = interviewer.get_interview_state()
     
     # Header
-    st.title("📝 Excel Proficiency Interview")
+    st.title("Excel Proficiency Interview")
     
     # Phase indicator
-    phase_emoji = {
-        'introduction': '👋',
-        'questioning': '❓',
-        'conclusion': '📊'
-    }
     current_phase = state['phase']
-    st.info(f"{phase_emoji.get(current_phase, '📝')} **Phase:** {current_phase.title()}")
+    st.info(f"**Phase:** {current_phase.title()}")
     
     # Handle different phases
     if current_phase == 'introduction':
@@ -585,7 +583,7 @@ def handle_introduction_phase(interviewer):
     st.markdown(f"""
     <div class="question-box">
         <div style="color: #ffffff !important; font-size: 16px; line-height: 1.6;">
-            {intro_text.replace('Hello!', '👋 Hello!')}
+            {intro_text.replace('Hello!', 'Hello!')}
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -593,7 +591,7 @@ def handle_introduction_phase(interviewer):
     # Ready button
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
-        if st.button("✅ I'm Ready to Begin!", use_container_width=True, type="primary"):
+        if st.button("I'm Ready to Begin!", use_container_width=True, type="primary"):
             response = interviewer.process_user_input("ready")
             st.session_state.current_question = response
             st.rerun()
@@ -604,7 +602,7 @@ def handle_questioning_phase(interviewer, state):
     
     # Show all previous questions and feedback in chronological order
     if st.session_state.feedback_history:
-        st.subheader("📋 Interview Progress")
+        st.subheader("Interview Progress")
         
         for i, feedback in enumerate(st.session_state.feedback_history):
             # Show the question
@@ -618,11 +616,11 @@ def handle_questioning_phase(interviewer, state):
             # Show the user's answer and feedback
             st.markdown(f"""
             <div class="feedback-box">
-                <strong>✍️ Your Answer:</strong><br>
+                <strong>Your Answer:</strong><br>
                 <div class="user-answer-box">
                 {feedback['answer']}
                 </div>
-                <strong>🤖 AI Feedback:</strong><br>
+                <strong>AI Feedback:</strong><br>
                 {feedback['feedback']}
             </div>
             """, unsafe_allow_html=True)
@@ -639,7 +637,7 @@ def handle_questioning_phase(interviewer, state):
         """, unsafe_allow_html=True)
         
         # Answer input
-        st.subheader("✍️ Your Answer")
+        st.subheader("Your Answer")
         user_answer = st.text_area(
             "Provide your detailed answer:",
             height=150,
@@ -651,10 +649,10 @@ def handle_questioning_phase(interviewer, state):
         # Submit button
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
-            if st.button("📤 Submit Answer", use_container_width=True, type="primary", disabled=not user_answer.strip()):
+            if st.button("Submit Answer", use_container_width=True, type="primary", disabled=not user_answer.strip()):
                 if user_answer.strip():
                     # Process the answer
-                    with st.spinner("🤖 AI is evaluating your answer..."):
+                    with st.spinner("AI is evaluating your answer..."):
                         response = interviewer.process_user_input(user_answer)
                     
                     # Check if interview has moved to conclusion phase
@@ -663,7 +661,7 @@ def handle_questioning_phase(interviewer, state):
                     if current_state['phase'] == 'conclusion':
                         # Interview is complete, generate final report
                         interviewer.phase = InterviewPhase.CONCLUSION
-                        with st.spinner("📊 Generating your comprehensive performance report..."):
+                        with st.spinner("Generating your comprehensive performance report..."):
                             final_report = interviewer._handle_conclusion_phase()
                         st.session_state.final_report = final_report
                         st.session_state.show_results = True
@@ -698,10 +696,10 @@ def handle_questioning_phase(interviewer, state):
 
 def handle_conclusion_phase(interviewer):
     """Handle the conclusion phase"""
-    st.success("🎉 Interview Complete!")
+    st.success("Interview Complete!")
     
     # Generate final report
-    with st.spinner("📊 Generating your comprehensive performance report..."):
+    with st.spinner("Generating your comprehensive performance report..."):
         final_report = interviewer._handle_conclusion_phase()
     
     st.session_state.final_report = final_report
@@ -719,7 +717,7 @@ def show_feedback_history():
 
 def show_results_page():
     """Display the comprehensive results page"""
-    st.title("📊 Your Excel Proficiency Report")
+    st.title("Your Excel Proficiency Report")
     
     # Check if we have a final report, if not try to generate it
     if 'final_report' not in st.session_state:
@@ -728,17 +726,17 @@ def show_results_page():
             st.session_state.feedback_history and 
             len(st.session_state.feedback_history) >= 3):
             
-            st.info("🔄 Generating missing report...")
+            st.info("Generating missing report...")
             try:
-                with st.spinner("📊 Generating your comprehensive performance report..."):
+                with st.spinner("Generating your comprehensive performance report..."):
                     final_report = st.session_state.interviewer._handle_conclusion_phase()
                 st.session_state.final_report = final_report
                 st.rerun()
             except Exception as e:
-                st.error(f"❌ Error generating report: {str(e)}")
+                st.error(f"Error generating report: {str(e)}")
                 return
         else:
-            st.error("❌ No report available. Please complete the interview first.")
+            st.error("No report available. Please complete the interview first.")
             return
     
     # Display the AI-generated report
@@ -753,15 +751,15 @@ def show_results_page():
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        if st.button("🔄 Take Another Assessment", use_container_width=True):
+        if st.button("Take Another Assessment", use_container_width=True):
             restart_interview()
     
     with col2:
-        if st.button("📥 Download PDF Report", use_container_width=True):
+        if st.button("Download PDF Report", use_container_width=True):
             download_report()
     
     with col3:
-        if st.button("🏠 Back to Home", use_container_width=True):
+        if st.button("Back to Home", use_container_width=True):
             reset_to_welcome()
 
 
@@ -772,7 +770,7 @@ def show_performance_charts():
     if not evaluations:
         return
     
-    st.subheader("📈 Performance Visualization")
+    st.subheader("Performance Visualization")
     
     # Score breakdown chart
     categories = ['Correctness', 'Efficiency', 'Clarity']
@@ -865,7 +863,7 @@ def download_report():
             story = []
             
             # Title
-            story.append(Paragraph("📊 Excel Proficiency Assessment Report", title_style))
+            story.append(Paragraph("Excel Proficiency Assessment Report", title_style))
             story.append(Spacer(1, 12))
             
             # Timestamp
@@ -914,7 +912,7 @@ def download_report():
             
             # Create download button
             st.download_button(
-                label="📄 Download PDF Report",
+                label="Download PDF Report",
                 data=pdf_data,
                 file_name=filename,
                 mime="application/pdf"
@@ -922,27 +920,27 @@ def download_report():
             
         except ImportError:
             # Fallback to text if reportlab is not available
-            st.error("❌ PDF generation not available. Please install reportlab.")
+            st.error("PDF generation not available. Please install reportlab.")
             # Provide text download as fallback
             report_content = st.session_state.final_report
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             filename = f"Excel_Assessment_Report_{timestamp}.txt"
             
             st.download_button(
-                label="📄 Download Text Report (Fallback)",
+                label="Download Text Report (Fallback)",
                 data=report_content,
                 file_name=filename,
                 mime="text/plain"
             )
         except Exception as e:
-            st.error(f"❌ Error generating PDF: {str(e)}")
+            st.error(f"Error generating PDF: {str(e)}")
             # Provide text download as fallback
             report_content = st.session_state.final_report
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             filename = f"Excel_Assessment_Report_{timestamp}.txt"
             
             st.download_button(
-                label="📄 Download Text Report (Fallback)",
+                label="Download Text Report (Fallback)",
                 data=report_content,
                 file_name=filename,
                 mime="text/plain"

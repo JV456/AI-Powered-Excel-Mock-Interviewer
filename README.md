@@ -72,7 +72,6 @@ The application will automatically open in your web browser! 🌟
 The system uses **gemma2-9b-it** by default for optimal performance. You can change this in `.env`:
 ```bash
 GROQ_MODEL=gemma2-9b-it  # Fast, efficient model
-# GROQ_MODEL=llama3-70b-8192  # More powerful but slower
 ```
 
 ## 📁 Project Structure
@@ -130,7 +129,18 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
+## 🎯 Output
+
+<img width="1919" height="864" alt="Screenshot 2025-09-13 213721" src="https://github.com/user-attachments/assets/041e271f-4878-4ea6-af06-ee24dc829da0" />
+<img width="1919" height="866" alt="Screenshot 2025-09-13 213909" src="https://github.com/user-attachments/assets/2634d9ec-64bd-4f89-b154-c9dd190e277f" />
+<img width="1919" height="853" alt="Screenshot 2025-09-13 214217" src="https://github.com/user-attachments/assets/f15d11ba-86ba-4164-a2bb-54b3f4377dc4" />
+<img width="1919" height="867" alt="Screenshot 2025-09-13 214316" src="https://github.com/user-attachments/assets/ba8b9ea0-3e55-4798-9b38-00bdc10349f4" />
+<img width="1919" height="873" alt="Screenshot 2025-09-13 214435" src="https://github.com/user-attachments/assets/9b8b4f7d-c3c7-4396-b31d-f74b271c82dd" />
+<img width="1919" height="866" alt="Screenshot 2025-09-13 214442" src="https://github.com/user-attachments/assets/943385f5-f4db-4a37-8372-98e6b0ab6920" />
+
+
 ## 📄 License
+
 
 This project is open source. Feel free to use, modify, and distribute according to your needs.
 

@@ -38,6 +38,72 @@ sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
 from src.interviewer import ExcelMockInterviewer, InterviewPhase
 
 
+def process_question_text(question_text):
+    """
+    Process question text to properly handle HTML tables and markdown formatting.
+    
+    Args:
+        question_text (str): Raw question text from AI that may contain HTML or markdown
+        
+    Returns:
+        str: Processed text ready for HTML display
+    """
+    if not question_text:
+        return ""
+    
+    # Remove markdown bold formatting
+    processed_text = question_text.replace('**', '')
+    
+    # Handle common HTML table issues - ensure proper table rendering
+    # Replace div-based tables with proper HTML tables if they exist
+    if '<div' in processed_text.lower() and 'table' in processed_text.lower():
+        # If the text contains div elements that should be tables, try to convert them
+        # This is a simple fix for common table rendering issues
+        processed_text = processed_text.replace('<div class="table">', '<table class="table">')
+        processed_text = processed_text.replace('</div>', '</table>' if '<table' in processed_text else '</div>')
+    
+    # Handle markdown tables - convert to HTML tables
+    if '|' in processed_text and processed_text.count('|') > 2:
+        lines = processed_text.split('\n')
+        html_lines = []
+        in_table = False
+        
+        for i, line in enumerate(lines):
+            if '|' in line and line.strip().startswith('|') and line.strip().endswith('|'):
+                if not in_table:
+                    html_lines.append('<table border="1" style="border-collapse: collapse; margin: 10px 0;">')
+                    in_table = True
+                
+                # Convert markdown table row to HTML
+                cells = [cell.strip() for cell in line.split('|')[1:-1]]  # Remove empty first/last elements
+                
+                # Skip separator lines (lines with only dashes and pipes)
+                if all(cell.replace('-', '').replace(' ', '') == '' for cell in cells):
+                    continue
+                
+                # Determine if this is a header row (first table row)
+                is_header = not in_table  # First row of a new table is header
+                tag = 'th' if is_header else 'td'
+                
+                row_html = '<tr>' + ''.join(f'<{tag} style="padding: 8px; border: 1px solid #ddd;">{cell}</{tag}>' for cell in cells) + '</tr>'
+                html_lines.append(row_html)
+            else:
+                if in_table:
+                    html_lines.append('</table>')
+                    in_table = False
+                html_lines.append(line)
+        
+        if in_table:
+            html_lines.append('</table>')
+        
+        processed_text = '\n'.join(html_lines)
+    
+    # Ensure line breaks are preserved for readability
+    processed_text = processed_text.replace('\n', '<br>')
+    
+    return processed_text
+
+
 def main():
     """Main Streamlit application"""
     st.set_page_config(
@@ -609,7 +675,7 @@ def handle_questioning_phase(interviewer, state):
             st.markdown(f"""
             <div class="question-box">
                 <h4>Question {feedback['question_number']} of {state['total_questions']}</h4>
-                {feedback['question'].replace('**', '')}
+                {process_question_text(feedback['question'])}
             </div>
             """, unsafe_allow_html=True)
             
@@ -632,7 +698,7 @@ def handle_questioning_phase(interviewer, state):
         st.markdown(f"""
         <div class="question-box">
             <h4>Question {state['current_question_number']} of {state['total_questions']}</h4>
-            {st.session_state.current_question.replace('**', '')}
+            {process_question_text(st.session_state.current_question)}
         </div>
         """, unsafe_allow_html=True)
         
